@@ -16,7 +16,7 @@ function App(): React.JSX.Element {
             <header className="App-header" role="heading">
                 UM COS420 with React Hooks and TypeScript
             </header>
-            <p> by Sebastian Anghel</p>
+            <p>Hello World! by Sebastian Anghel</p>
 
             {/* image loaded in */}
             <img src="../assets/images/pet-ada.jpg" alt="A picture of my dog Ada" />
