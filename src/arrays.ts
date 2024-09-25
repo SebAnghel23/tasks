@@ -5,7 +5,13 @@
  * the number twice.
  */
 export function bookEndList(numbers: number[]): number[] {
-    return numbers;
+    if (numbers.length === 0) {
+        return [];
+    } else if (numbers.length === 1) {
+        return [numbers[0], numbers[0]];
+    } else {
+        return [numbers[0], numbers[numbers.length - 1]];
+    }
 }
 
 /**
@@ -13,7 +19,7 @@ export function bookEndList(numbers: number[]): number[] {
  * number has been tripled (multiplied by 3).
  */
 export function tripleNumbers(numbers: number[]): number[] {
-    return numbers;
+    return numbers.map((number) => number * 3);
 }
 
 /**
@@ -21,7 +27,10 @@ export function tripleNumbers(numbers: number[]): number[] {
  * the number cannot be parsed as an integer, convert it to 0 instead.
  */
 export function stringsToIntegers(numbers: string[]): number[] {
-    return [];
+    return numbers.map((num) => {
+        const parsed = parseInt(num, 10);
+        return isNaN(parsed) ? 0 : parsed;
+    });
 }
 
 /**
@@ -32,7 +41,10 @@ export function stringsToIntegers(numbers: string[]): number[] {
  */
 // Remember, you can write functions as lambdas too! They work exactly the same.
 export const removeDollars = (amounts: string[]): number[] => {
-    return [];
+    const trimmedAmounts = amounts.map((str) => {
+        return str.startsWith("$") ? str.slice(1) : str;
+    });
+    return stringsToIntegers(trimmedAmounts);
 };
 
 /**
@@ -41,7 +53,10 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    return [];
+    const filteredMessages = messages.filter((msg) => !msg.endsWith("?"));
+    return filteredMessages.map((msg) => {
+        return msg.endsWith("!") ? msg.toUpperCase() : msg;
+    });
 };
 
 /**
@@ -49,7 +64,9 @@ export const shoutIfExclaiming = (messages: string[]): string[] => {
  * 4 letters long.
  */
 export function countShortWords(words: string[]): number {
-    return 0;
+    return words.reduce((count: number, currentValue: string) => {
+        return currentValue.length < 4 ? count + 1 : count;
+    }, 0);
 }
 
 /**
@@ -58,7 +75,15 @@ export function countShortWords(words: string[]): number {
  * then return true.
  */
 export function allRGB(colors: string[]): boolean {
-    return false;
+    if (colors.length === 0) {
+        return true;
+    } else {
+        const rgbColors = ["red", "green", "blue"];
+        const haveSomeOtherColor = colors.some((currentColor) => {
+            return rgbColors.indexOf(currentColor) === -1; // return true if the current color is not in the array of RGB
+        });
+        return !haveSomeOtherColor;
+    }
 }
 
 /**
@@ -68,8 +93,17 @@ export function allRGB(colors: string[]): boolean {
  * For instance, the array [1, 2, 3] would become "6=1+2+3".
  * And the array [] would become "0=0".
  */
+
 export function makeMath(addends: number[]): string {
-    return "";
+    if (addends.length === 0) {
+        return "0=0";
+    } else {
+        const totalSum = addends.reduce((sum: number, currentValue: number) => {
+            return sum + currentValue;
+        }, 0);
+        const addedElements = addends.join("+");
+        return totalSum.toString() + "=" + addedElements;
+    }
 }
 
 /**
@@ -82,5 +116,25 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-    return [];
+    let firstNegativeFoundBefore = false;
+    let result = [] as Array<number>;
+    const finalSum = values.reduce((sum, currentValue: number) => {
+        result.push(currentValue);
+        if (!firstNegativeFoundBefore) {
+            if (currentValue < 0) {
+                firstNegativeFoundBefore = true;
+                result.push(sum);
+            } else {
+                return sum + currentValue;
+            }
+        }
+        return sum;
+    }, 0);
+
+    if (!firstNegativeFoundBefore) {
+        // if we never found a negative we add the final sum outside of the reduce
+        result.push(finalSum);
+    }
+
+    return result;
 }
