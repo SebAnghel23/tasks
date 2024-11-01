@@ -66,7 +66,6 @@ export function makeAnswers(questions: Question[]): Answer[] {
         correct: false,
     }));
 }
-
 /***
  * Consumes an array of Questions and produces a new array of questions, where
  * each question is now published, regardless of its previous published status.
